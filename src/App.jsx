@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import Globe from 'react-globe.gl'
 import './App.css'
 
-// Venice coordinates (moved further south toward central Italy)
+// Venice coordinates
 const VENICE = { lat: 42.5, lng: 13, name: 'Venice' }
 
 function App() {
@@ -39,16 +39,6 @@ function App() {
     return () => cancelAnimationFrame(animationId)
   }, [])
 
-  // Centre the camera directly on Venice and keep it there
-  useEffect(() => {
-    if (globeEl.current) {
-      globeEl.current.pointOfView(
-        { lat: VENICE.lat, lng: VENICE.lng, altitude: 3 },
-        2000
-      )
-    }
-  }, [])
-
   // click handler for points
   const handlePointClick = (point) => {
     alert(`You clicked on ${point.name}`)
@@ -59,7 +49,11 @@ function App() {
       <Globe
         ref={globeEl}
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+        backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
         showGlobe={true}
+        showAtmosphere={true}
+        autoRotate={true}
+        autoRotateSpeed={2}
         // simple points layer
         pointsData={allPoints}
         pointLat="lat"
@@ -79,8 +73,6 @@ function App() {
         pointAltitude={0.15 * pointScale}
 
         onPointClick={handlePointClick}
-        // keep the view fixed on Venice
-        autoRotate={true}
         backgroundColor="#000"
       />
     </div>
