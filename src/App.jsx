@@ -1,12 +1,15 @@
 import { useRef, useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import Globe from 'react-globe.gl'
+import VenicePage from './pages/VenicePage'
 import './App.css'
 
 // Venice coordinates
 const VENICE = { lat: 42.5, lng: 13, name: 'Venice' }
 
-function App() {
+function GlobePage() {
   const globeEl = useRef()
+  const navigate = useNavigate()
   const [pointScale, setPointScale] = useState(1)
 
   // show just Venice as single point
@@ -41,7 +44,9 @@ function App() {
 
   // click handler for points
   const handlePointClick = (point) => {
-    alert(`You clicked on ${point.name}`)
+    if (point.name === 'Venice') {
+      navigate('/venice')
+    }
   }
 
   return (
@@ -76,6 +81,17 @@ function App() {
         backgroundColor="#000"
       />
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<GlobePage />} />
+        <Route path="/venice" element={<VenicePage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
